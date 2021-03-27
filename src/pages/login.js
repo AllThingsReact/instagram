@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import FirebaseContext from "../context/firebase";
-import { DASHBOARD } from "../constants/routes";
+import { DASHBOARD, SIGN_UP } from "../constants/routes";
 
 export default function Login() {
   const history = useHistory();
@@ -19,7 +19,7 @@ export default function Login() {
     event.preventDefault();
     try {
       await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
-      history.push(ROUTES.DASHBOARD);
+      history.push(DASHBOARD);
     } catch (error) {
       setEmailAddress("");
       setPassword("");
@@ -76,7 +76,7 @@ export default function Login() {
         <div className="flex justify-center items-center flex-col w-full bg-white p-4 border border-gray-primary rounded">
           <p className="text-sm">
             Don't have an account?{` `}
-            <Link to="/signup" className="font-bold text-blue-medium">
+            <Link to={SIGN_UP} className="font-bold text-blue-medium">
               Sign up
             </Link>
           </p>
