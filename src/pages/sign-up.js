@@ -23,10 +23,9 @@ export default function SignUp() {
     const userNameExists = await doesUsernameExist(username);
     if (!userNameExists.length) {
       try {
-        const createdUserResult = await firebase.auth.createUserWithEmailAndPassword(
-          emailAddress,
-          password
-        );
+        const createdUserResult = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(emailAddress, password);
 
         await createdUserResult.user.updateProfile({
           displayName: username,
