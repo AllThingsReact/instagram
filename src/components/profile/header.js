@@ -45,17 +45,11 @@ export default function Header({
   return (
     <div className="grid grid-cols-3 gap-4 justify-between mx-auto max-w-screen-lg">
       <div className="container flex justify-center items-center">
-        {profileUsername ? (
+        {profileUsername && (
           <img
             className="rounded-full h-40 w-40 flex"
             alt={`${fullName} profile picture`}
             src={`/images/avatars/${profileUsername}.jpg`}
-          />
-        ) : (
-          <img
-            className="rounded-full h-40 w-40 flex"
-            alt={"Karl Hadwen's profile picture"}
-            src="/images/avatars/karl.jpg"
           />
         )}
       </div>
