@@ -58,4 +58,46 @@ describe("<Login />", () => {
       });
     });
   });
+
+  it("renders the login page with a form submission and fails to login the user", async () => {
+    const failToLogin = jest.fn(() => Promise.reject(new Error("Error")));
+    const firebase = {
+      auth: jest.fn(() => ({
+        signInWithEmailAndPassword: failToLogin,
+      })),
+    };
+
+    const { getByTestId, getByPlaceholderText, queryByTestId } = render(
+      <Router>
+        <FirebaseContext.Provider value={{ firebase }}>
+          <Login />
+        </FirebaseContext.Provider>
+      </Router>
+    );
+
+    await act(async () => {
+      expect(document.title).toEqual("Login - Instagram");
+
+      await fireEvent.change(getByPlaceholderText("Email Address"), {
+        target: { value: "test.com" },
+      });
+      await fireEvent.change(getByPlaceholderText("Password"), {
+        target: { value: "password" },
+      });
+      fireEvent.submit(getByTestId("login"));
+
+      expect(failToLogin).toHaveBeenCalled();
+      expect(failToLogin).toHaveBeenLastCalledWith(
+        "test.com",
+        "password"
+      );
+
+      await waitFor(() => {
+        expect(mockHistoryPush).toHaveBeenCalledTimes(0);
+        expect(getByPlaceholderText("Email Address").value).toBe("");
+        expect(getByPlaceholderText("Password").value).toBe("");
+        expect(queryByTestId("error")).toBeTruthy();
+      });
+    });
+  });
 });
